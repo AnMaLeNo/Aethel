@@ -151,15 +151,20 @@
             width: 100%;
         }
         #header {
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: 100px 1fr 100px;
             align-items: center;
             width: 100%;
             max-width: 900px;
             margin-top: 40px;
             padding: 0 20px;
         }
-        .header-titles { text-align: center; }
+        #header > :first-child { justify-self: start; }
+        #header > :last-child { justify-self: end; }
+        .header-titles { 
+            text-align: center; 
+            justify-self: center;
+        }
         #level-indicator {
             font-size: 20px;
             font-weight: 900;
@@ -191,14 +196,55 @@
         }
         #message.show { opacity: 1; }
 
-        /* The Board */
-        #board-wrapper {
+        /* The Board & Layout */
+        #game-layout {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 40px;
+            width: 100%;
+            max-width: 1200px;
             margin-top: 10px;
+        }
+
+        #board-wrapper {
             padding: 24px;
             background: #18181f;
             border-radius: 24px;
             border: var(--border-width) solid var(--border-color);
             box-shadow: inset 0 0 0 4px #23232c, 0 12px 0 var(--border-color);
+        }
+
+        /* Spark Counter Panel */
+        #spark-counter-panel {
+            background: #1a1a1f;
+            border: var(--border-width) solid var(--border-color);
+            border-radius: 24px;
+            padding: 25px;
+            box-shadow: 0 12px 0 var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            min-width: 160px;
+        }
+        #spark-counter-panel h3 {
+            margin: 0;
+            color: #a0a0b0;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        #spark-count {
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--spark-glow);
+            text-shadow: 0 0 15px rgba(100, 255, 218, 0.4);
+            font-family: monospace;
+        }
+        .count-error {
+            color: #ff4444 !important;
+            text-shadow: 0 0 15px rgba(255, 68, 68, 0.4) !important;
         }
 
         /* Tutorial */
@@ -419,8 +465,17 @@
         
         <div id="message">Niveau Terminé !</div>
         
-        <div id="board-wrapper">
-            <div id="board" oncontextmenu="return false;"></div>
+        <div id="game-layout">
+            <div id="spark-counter-panel">
+                <h3>Étincelles</h3>
+                <div id="spark-count">0 / ?</div>
+            </div>
+            
+            <div id="board-wrapper">
+                <div id="board" oncontextmenu="return false;"></div>
+            </div>
+            
+            <div style="min-width: 160px;"></div> <!-- Spacer to keep board perfectly centered -->
         </div>
         
         <div id="controls">
@@ -462,36 +517,75 @@
             [-2,5,-1,3,-1,-2],
             [-2,5,-1,-1,-1,-2],
             [-2,-1,-1,-1,-1,-2],
-            [-2,-2,-2,-2,-2,-2]]
-        ]
+            [-2,-2,-2,-2,-2,-2]],
+            [
+                [-2,5,-1,5,0,-2],
+                [5,-1,-1,5,-1,5],
+                [5,1,-1,-1,-1,-1],
+                [-1,-1,-1,-1,1,5],
+                [5,-1,5,-1,-1,5],
+                [-2,0,5,-1,5,-2]
+            ],
+            [
+                [-2,-2,-1,5,-1,-2,-2],
+                [-2,-1,-1,-1,-1,5,-2],
+                [5,5,1,2,-1,5,5],
+                [-1,5,2,-1,2,5,-1],
+                [5,5,-1,2,1,5,5],
+                [-2,5,-1,-1,-1,-1,-2],
+                [-2,-2,-1,5,-1,-2,-2]
+            ]
+        ],
+        maxSparks: [2, 4, 5, '?', '?']
     },
     {
         name: "Monde 2 : Les Miroirs",
         mechanic: "Les Miroirs dévient le faisceau de lumière à 90 degrés !",
         levels: [
             [
-                [-2,-1,-1, 7,-2],
-                [-1,-1,-1,-1,-1],
-                [-1, 8,-1, 5,-1],
-                [-2,-1,-1,-1,-2]
+                [-2,-2,-2,-2,-2,-2],
+                [-2,-1,-1,-1,-1,-2],
+                [-2,-1, 7,-1, 8,-2],
+                [-2,-1,-1,-1,-1,-2],
+                [-2,-1,-1,-1,-1,-2],
+                [-2,-2,-2,-2,-2,-2]
+            ],
+                        [
+                [-2, 8, 8,-1,-1,-2],
+                [ 8, 7,-1, 8, 8, 8],
+                [-1,-1,-1, 7, 8,-1],
+                [-1, 8, 7,-1,-1,-1],
+                [ 8, 8, 8,-1, 7, 8],
+                [-2,-1,-1, 8, 8,-2]
             ],
             [
-                [-2,-1,-1,-1,-1,-2],
-                [-1,-1, 7,-1, 7,-1],
-                [-1, 8,-1, 5,-1,-1],
-                [-1,-1,-1,-1, 8,-1],
-                [-2,-1,-1,-1,-1,-2]
+                [-2,-2, 7,-1, 8,-2,-2],
+                [-2, 7,-1, 8,-1,-1,-2],
+                [-1,-1,-1, 7,-1,-1, 7],
+                [-1,-1,-1,-1,-1,-1,-1],
+                [ 7,-1,-1, 7,-1,-1,-1],
+                [-2,-1,-1, 8,-1, 7,-2],
+                [-2,-2, 8,-1, 7,-2,-2]],
+            [
+                [-2,-1,7,5,5,-2],
+                [8,-1,1,-1,-1,-1],
+                [1,8,8,8,8,-1],
+                [-1,8,8,8,8,1],
+                [-1,-1,-1,1,-1,8],
+                [-2,5,5,7,-1,-2]
             ],
             [
-                [-2,-1,-1,-1,-1,-2],
-                [-1,-1, 7, 8,-1,-1],
-                [-1,-1,-1,-1,-1,-1],
-                [-1,-1, 8, 7,-1,-1],
-                [-2,-1,-1,-1,-1,-2]
+                [-2,-2,7,-1,8,-2,-2],
+                [-2,8,-1,-1,5,0,-2],
+                [-1,-1,-1,-1,8,7,8],
+                [-1,7,0,2,0,7,-1],
+                [8,7,8,-1,-1,-1,-1],
+                [-2,0,5,-1,-1,8,-2],
+                [-2,-2,8,-1,7,-2,-2]
             ]
-        ]
-    }
-];
+        ],
+        maxSparks: [2, '?', '?', '?', '?']
+    }];
 
         let currentWorld = 0;
         let currentLevel = 0;
@@ -678,7 +772,17 @@
                 }
             }
 
-            const win = allLit && !sparksSeeEachOther && allWallsSatisfied;
+            let currentSparksCount = 0;
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    if (state[y][x] === 1) currentSparksCount++;
+                }
+            }
+            
+            const maxSparks = worlds[currentWorld].maxSparks[currentLevel];
+            const maxSparksSatisfied = maxSparks === '?' || currentSparksCount <= maxSparks;
+
+            const win = allLit && !sparksSeeEachOther && allWallsSatisfied && maxSparksSatisfied;
             return { lit, litCrystal, sparkErrors, wallErrors, wallSatisfied, win };
         }
 
@@ -688,6 +792,23 @@
             board.style.gridTemplateColumns = `repeat(${grid[0].length}, 60px)`;
 
             const logic = validateLogic();
+            
+            let currentSparks = 0;
+            for (let y = 0; y < grid.length; y++) {
+                for (let x = 0; x < grid[0].length; x++) {
+                    if (state[y][x] === 1) currentSparks++;
+                }
+            }
+            
+            const maxSparks = worlds[currentWorld].maxSparks[currentLevel];
+            const sparkCountEl = document.getElementById('spark-count');
+            sparkCountEl.textContent = `${currentSparks} / ${maxSparks}`;
+            
+            if (maxSparks !== '?' && currentSparks > maxSparks) {
+                sparkCountEl.classList.add('count-error');
+            } else {
+                sparkCountEl.classList.remove('count-error');
+            }
 
             for (let y = 0; y < grid.length; y++) {
                 for (let x = 0; x < grid[0].length; x++) {
