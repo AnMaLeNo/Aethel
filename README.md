@@ -21,8 +21,8 @@ Light up **every empty tile** on the board without breaking any of the rules bel
 
 ## Worlds
 
-- **World 1: The Awakening** teaches the basic rules and numbered walls.
-- **World 2: The Mirrors** adds mirrors (╱ and ╲) that bend the light beam by 90 degrees.
+- **World 1: Awakening** teaches the basic rules and numbered walls.
+- **World 2: Mirrors** adds mirrors (╱ and ╲) that bend the light beam by 90 degrees.
 
 ## How to play
 

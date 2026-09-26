@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Aethel - Logique & Lumière</title>
+    <title>Aethel - Logic & Light</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
 
@@ -448,14 +448,14 @@
     <!-- LOBBY SCREEN -->
     <div id="lobby">
         <h1>Aethel</h1>
-        <div class="subtitle">Logique & Lumière</div>
+        <div class="subtitle">Logic & Light</div>
         <div id="worlds-list"></div>
     </div>
 
     <!-- GAME SCREEN -->
     <div id="game-ui">
         <div id="header">
-            <button class="btn" id="btn-back" onclick="showLobby()">← Retour</button>
+            <button class="btn" id="btn-back" onclick="showLobby()">← Back</button>
             <div class="header-titles">
                 <h1>Aethel</h1>
                 <div id="level-indicator">Monde 1 - Niveau 1</div>
@@ -463,11 +463,11 @@
             <button class="btn" id="help-btn" onclick="showTutorial(true)">?</button>
         </div>
         
-        <div id="message">Niveau Terminé !</div>
+        <div id="message">Level Complete!</div>
         
         <div id="game-layout">
             <div id="spark-counter-panel">
-                <h3>Étincelles</h3>
+                <h3>Sparks</h3>
                 <div id="spark-count">0 / ?</div>
             </div>
             
@@ -479,25 +479,25 @@
         </div>
         
         <div id="controls">
-            <button class="btn" onclick="prevLevel()">Précédent</button>
-            <button class="btn" onclick="loadLevel(currentWorld, currentLevel)">Recommencer</button>
-            <button class="btn primary" onclick="nextLevel()">Suivant →</button>
+            <button class="btn" onclick="prevLevel()">Previous</button>
+            <button class="btn" onclick="loadLevel(currentWorld, currentLevel)">Restart</button>
+            <button class="btn primary" onclick="nextLevel()">Next →</button>
         </div>
     </div>
 
     <div id="instructions-modal" onclick="this.style.display='none'">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <h3 id="tut-modal-title">Tutoriel</h3>
+            <h3 id="tut-modal-title">Tutorial</h3>
             <div id="tut-modal-content"></div>
-            <button class="btn primary" onclick="document.getElementById('instructions-modal').style.display='none'">Compris !</button>
+            <button class="btn primary" onclick="document.getElementById('instructions-modal').style.display='none'">Got it!</button>
         </div>
     </div>
 
     <script>
         const worlds = [
     {
-        name: "Monde 1 : L'Éveil",
-        mechanic: "Placez des Étincelles pour tout illuminer. Les murs chiffrés indiquent le nombre d'Étincelles directement adjacentes.",
+        name: "World 1: Awakening",
+        mechanic: "Place Sparks to illuminate everything. Numbered walls indicate the exact number of adjacent Sparks.",
         levels: [
             [[-2,-2,-2,-2,-2],
             [-2,-1,5,5,-2],
@@ -539,8 +539,8 @@
         maxSparks: [2, 4, 5, '?', '?']
     },
     {
-        name: "Monde 2 : Les Miroirs",
-        mechanic: "Les Miroirs dévient le faisceau de lumière à 90 degrés !",
+        name: "World 2: Mirrors",
+        mechanic: "Mirrors deflect the light beam by 90 degrees!",
         levels: [
             [
                 [-2,-2,-2,-2,-2,-2],
@@ -632,7 +632,7 @@
             state = grid.map(row => row.map(() => 0));
             isWon = false;
             
-            document.getElementById('level-indicator').textContent = `Monde ${currentWorld + 1} - Niveau ${currentLevel + 1}`;
+            document.getElementById('level-indicator').textContent = `World ${currentWorld + 1} - Level ${currentLevel + 1}`;
             document.getElementById('message').classList.remove('show');
             
             showTutorial();
@@ -652,27 +652,27 @@
             content.innerHTML = '';
             
             if (currentWorld === 0) {
-                title.textContent = "Tutoriel : Les Bases";
+                title.textContent = "Tutorial: Basics";
                 content.innerHTML = `
                     <div class="tut-vis">
                         <div class="cell empty lit tut-icon"><div class="spark-node"></div></div>
-                        <p><strong>Clic gauche</strong> pour placer une Étincelle.</p>
+                        <p><strong>Left click</strong> to place a Spark.</p>
                     </div>
                     <div class="tut-vis">
                         <div class="cell empty lit tut-icon"></div>
-                        <p>Elle illumine toute sa ligne et colonne.</p>
+                        <p>It illuminates its entire row and column.</p>
                     </div>
                     <div class="tut-vis">
                         <div class="cell wall tut-icon">2</div>
-                        <p>Le chiffre indique le nombre exact d'étincelles adjacentes.</p>
+                        <p>The number indicates the exact amount of adjacent sparks.</p>
                     </div>
                 `;
             } else if (currentWorld === 1) {
-                title.textContent = "Tutoriel : Miroirs";
+                title.textContent = "Tutorial: Mirrors";
                 content.innerHTML = `
                     <div class="tut-vis">
                         <div class="cell mirror lit-through tut-icon">╱</div>
-                        <p><strong>Miroirs :</strong> Ils dévient le faisceau de lumière à 90 degrés !</p>
+                        <p><strong>Mirrors:</strong> They deflect the light beam by 90 degrees!</p>
                     </div>
                 `;
             }
